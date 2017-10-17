@@ -1,0 +1,28 @@
+<!Doctype html>
+<html>
+<link href="stylesheets/hodControls.css" rel="stylesheet"></link>
+<head>
+        <title>HOD Controls</title>
+        <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+        <script src="/scripts/scriptHodControls.js"></script>
+</head>
+<body>
+        <h1>Faculties for confirmation are :-</h1>
+        <div id="facultyContainer">
+                <% for(var i=0;i<data.length;i++){ %>
+                        <div id="faculty<%=data[i]._id %>" class="faculty"><!--adding faculty's _id  to it's container to uniquely identify-->
+                                <h1><%=data[i].name%></h1>
+                                <p><%=data[i].offEmail%></p>
+                                <p><%=data[i].mobile%></p>
+                                <p><%=data[i].branch%></p>
+                                <p><%=data[i].expYears%> Year(s) <%=data[i].expMonths%> month(s) Experience</p>
+                                <p class="title"><%=data[i].CollegeName%></p>
+
+                                <!--sending faculty's _id of faculty to by using id property-->
+                                <p><button class="buttonConfirm" id="buttonConfirm<%=data[i]._id %>" onclick="confirmFaculty(this)">Recommend</button></p>
+                                <p><button class="buttonRemove" id="buttonRemove<%=data[i]._id %>" onclick="removeFaculty(this)">Remove</button></p>
+                        </div>
+                <%}%>
+        </div>
+</body>
+</html>

@@ -1,0 +1,63 @@
+        <form id="signUpForm" action="signUpForm" method="POST">
+                <div id="signUpFormHeader">SIGNUP</div>
+                        <div id="signUpFormFields">
+                                <div id="step1">
+                                        <label for="name" class="labelField">Enter your full name</label>
+                                        <input type="text" class="inputField" name="name" id="signUpFieldName" placeholder="Full Name" ></input>
+
+                                        <label for="perEmail" class="labelField">Enter your personal email</label>
+                                        <input type="email" class="inputField" name="perEmail" id="signUpFieldPerEmail" placeholder="Personal Email" ></input>
+
+                                        <label for="mobile" class="labelField">Enter your mobile number</label>
+                                        <input type="text" class="inputField" name="mobile" id="signUpFieldMobile" placeholder="mobile" ></input>
+
+                                        <label for="password" class="labelField">Enter the password</label>
+                                        <input type="password" class="inputField" name="pass" id="signUpFieldPassword" placeholder="Password" ></input>
+
+                                        <label for="designation" class="labelField">Select your Designation</label>
+                                        <select name="designation" id="designation" class="inputField">
+                                                <option value="1">Faculty</option>
+                                                <option value="2">HOD</option>
+                                                <option value="3">Dean</option>
+                                        </select>
+                                </div>
+
+                                <div id="step2">
+                                        <label for="collegeName" class="labelField">Enter the college name</label>
+                                        <input type="text" class="inputField" name="CollegeName" id="signUpFieldCollegeName" placeholder="College Name" ></input>
+
+                                        <label for="collegeCode" class="labelField">Enter the college code</label>
+                                        <input type="text" class="inputField" name="CollegeCode" id="signUpFieldCollegeCode" placeholder="College Code" ></input>
+
+                                        <label for="offEmail" class="labelField">Enter your official email</label>
+                                        <input type="email" class="inputField" name="offEmail" id="signUpFieldOffEmail" placeholder="Officail Email" ></input>
+
+                                        <label for="experence" class="labelField">Enter the experience</label><br>
+                                        <label for="years">Years</label>
+                                        <input type="number" name="expYears" class="inputField" placeholder="Years"</input>
+                                        <label for="months">Months</label>
+                                        <input type="number" name="expMonths" class="inputField"  max="12" placeholder="Months"></input>
+                                </div>
+                                <div id="step3">
+                                        <label for="branch" class="labelField step3Field branch">Select your branch</label>
+                                        <select name="branch" class="inputField step3Field branch">
+                                                <option value="1">CSE</option>
+                                                <option value="2">IT</option>
+                                                <option value="3">Civil</option>
+                                                <option value="4">Mechanical</option>
+                                                <option value="5">EC</option>
+                                                <option value="6">Electrical</option>
+                                        </select>
+                                        <label for="dateJoinHod" class="labelField step3Field dateJoinHod">Date of joining as HOD</label>
+                                        <input type="date" class="inputField step3Field dateJoinHod" name="dateJoinHod" id="signUpFielddateJoinHod" placeholder="Date of join" ></input>
+
+                                        <label for="dateJoinDean" class="labelField step3Field dateJoinDean">Date of joining as Dean</label>
+                                        <input type="date" class="inputField step3Field dateJoinDean" name="dateJoinDean" id="signUpFielddateJoinDean" placeholder="Date of join" ></input>
+
+                                </div>
+                                <div id="step4">
+                                        <p>Thankyou, your request is successfully submitted<br> We'll go through it and email you if required...</p>
+                                </div>
+                        </div>
+                        <input type="submit" id="buttonNext" value="Next"></input>
+                </form>

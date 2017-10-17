@@ -1,0 +1,61 @@
+#logInForm{
+        border:3px solid black;
+        min-width: 25vw;
+        text-align: center;
+        background-color: white;
+        border-radius: 10px;
+        font-size: 100%;
+}
+
+#logInForm #logInFormHeader{
+        width: 100%;
+        border-bottom: 2px solid black;
+        margin-bottom: 5px;
+        font-size: 170%;
+        /background-color:red;
+        color:black;
+        overflow: auto;
+        text-align: center;
+        font-family:sans-serif;
+        padding: 5px;
+}
+
+#logInForm #logInFormFields{
+        padding-left: 15px;
+        padding-right: 15px;
+        text-align: left;
+        overflow: visible;
+}
+
+
+#logInForm .inputField{
+        display: block;
+        min-width:100%;
+        font-size: 140%;
+        border-radius:4px;
+        border: 1px solid #e5e5e5;
+        margin-bottom: 15px;
+        padding-top:5px;
+        padding-bottom:5px;
+}
+
+#logInForm .labelField{
+        margin-bottom: 5px;
+        color:black;
+}
+
+#logInForm input[type="submit"]{
+        cursor: pointer;
+        width: 90%;
+        /background-color: red;
+        border: none;
+        font-size: 130%;
+        /color:white;
+        margin-bottom: 15px;
+        padding: 5px;
+}
+#logInForm #forgotPassword{
+        cursor: pointer;
+        color:blue;
+        margin:0;
+}

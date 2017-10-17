@@ -1,0 +1,47 @@
+<!Doctype html>
+<html>
+<link href="stylesheets/deanControls.css" rel="stylesheet"></link>
+<head>
+        <title>Dean Controls</title>
+        <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+        <script src="/scripts/scriptDeanControls.js"></script>
+</head>
+<body>
+        <div id="facultyContainer">
+                <h1>Faculties for confirmation are :-</h1>
+                <% for(var i=0;i<data.faculty.length;i++){ %>
+                        <div id="faculty<%=data.faculty[i]._id %>" class="faculty"><!--adding faculty's _id  to it's container to uniquely identify-->
+                                <h1><%=data.faculty[i].name%></h1>
+                                <p><%=data.faculty[i].offEmail%></p>
+                                <p><%=data.faculty[i].mobile%></p>
+                                <p><%=data.faculty[i].branch%></p>
+                                <p><%=data.faculty[i].expYears%> Year(s) <%=data.faculty[i].expMonths%> month(s) Experience</p>
+                                <p class="title"><%=data.faculty[i].CollegeName%></p>
+
+                                <!--sending faculty's _id of faculty to by using id property-->
+                                <p><button class="buttonConfirm" id="buttonConfirm<%=data.faculty[i]._id %>" onclick="confirmFaculty(this)">Confirm</button></p>
+                                <p><button class="buttonRemove" id="buttonRemove<%=data.faculty[i]._id %>" onclick="removeFaculty(this)">Remove</button></p>
+                        </div>
+                <%}%>
+        </div>
+
+        <div id="hodContainer">
+                <h1>HODs for confirmation are :-</h1>
+                <% for(var i=0;i<data.hod.length;i++){ %>
+                        <div id="hod<%=data.hod[i]._id %>" class="hod"><!--adding hod's _id  to it's container to uniquely identify-->
+                                <h1><%=data.hod[i].name%></h1>
+                                <p><%=data.hod[i].offEmail%></p>
+                                <p><%=data.hod[i].mobile%></p>
+                                <p><%=data.hod[i].branch%></p>
+                                <p><%=data.hod[i].expYears%> Year(s) <%=data.hod[i].expMonths%> month(s) Experience</p>
+                                <p class="title"><%=data.hod[i].CollegeName%></p>
+
+                                <!--sending hod's _id of hod to by using id property-->
+                                <p><button class="buttonConfirm" id="buttonConfirm<%=data.hod[i]._id %>" onclick="confirmHod(this)">Confirm</button></p>
+                                <p><button class="buttonRemove" id="buttonRemove<%=data.hod[i]._id %>" onclick="removeHod(this)">Remove</button></p>
+                        </div>
+                <%}%>
+        </div>
+
+</body>
+</html>

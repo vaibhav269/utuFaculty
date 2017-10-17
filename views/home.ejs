@@ -1,0 +1,33 @@
+<!Doctype html>
+<html>
+<head>
+        <title>Uttarakhand Technical University</title>
+        <link href="stylesheets/home.css" rel="stylesheet"></link>   <!-- page main css-->
+        <link href="stylesheets/partials/signUp.css" rel="stylesheet"></link>   <!-- page signUp css-->
+        <link href="stylesheets/partials/logIn.css" rel="stylesheet"></link>   <!-- page logIn css-->
+
+        <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+        <script src="scripts/partials/signUp.js"></script>
+        <script src="scripts/partials/logIn.js"></script>
+</head>
+<body>
+        <!--header started -->
+        <div id="header">
+                        <h1 id="headerHead">Uttarakhand Technical University</h1>
+                        <p id="headerDef">A state government University</p>
+                        <h1>OFFICIAL PORTAL</h1>
+                </div>
+        <!--header end -->
+
+        <!-- mid Content Started -->
+        <div id="midContent">
+                <div id="signUp">
+                        <%include ./partials/signUp.ejs %>
+                </div>
+                <div id="logIn">
+                        <% include ./partials/logIn.ejs%>
+                </div>
+        </div>
+        <!-- mid Content End -->
+</body>
+</html>
