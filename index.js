@@ -63,9 +63,16 @@ var deanSchema=new mongoose.Schema({
         confirm:{type:Boolean}
 },{timestamps:true});
 
+var adminSchema=new mongoose.Schema({
+                offEmail:{type:String,trim:true},
+                pass:{type:String},
+                designation:{type: String,required: true,trim: true}
+});
+
 var faculty=mongoose.model('faculty',facultySchema);
 var hod=mongoose.model('hod',hodSchema);
 var dean=mongoose.model('dean',deanSchema);
+var admin=mongoose.model('admin',adminSchema);
 
 //database connection end
 
@@ -82,6 +89,29 @@ app.get('/',function(req,res){
         else
                 res.render('home');
 });
+
+/*app.get('/admin',function(req,res){
+        userData=req.query;
+        bcrypt.hash(userData.pass, 10, function (err, hash){            //hashing the user's password before hashing
+                if (err) {
+                        console.log("error while hashing");
+                    }
+                 else{
+                            userData.pass = hash;                                       //replacing original password with hash
+                            admin.create(userData, function (err, user) {        //storing all data along with hashed password
+                                    if (err){
+                                            console.log(err);
+                                    }
+                                    else{
+                                            console.log("saved");
+                                    }
+                        });
+                }
+        })
+});
+*/
+
+
 
 app.post('/signUpForm',function(req,res){
         function saveData(userData,model)
@@ -144,6 +174,9 @@ app.post('/logInForm',function(req,res){
         if(req.body.designation=="3")
                         model=dean;
 
+        if(req.body.designation=="4")
+                        model=admin;
+
           model.findOne({offEmail:req.body.offEmail},function(err,userData){
                                 if(userData!=null)
                                 {
@@ -170,6 +203,17 @@ app.get('/logInFaculty',function(req,res){
         sess=req.session;
         if(sess.offEmail){
                 res.render('logInFaculty');
+        }
+        else
+                res.redirect('/');
+});
+
+app.get('/logInAdmin',function(req,res){
+        sess=req.session;
+        if(sess.offEmail){
+                        dean.find({confirm:false},null,{sort:{createdAt:-1}},function(err,data){
+                                res.render('logInAdmin',{data:data});
+                        });
         }
         else
                 res.redirect('/');
@@ -273,6 +317,23 @@ app.get('/logInDean',function(req,res){
         }
         else
                 res.redirect('/');
+});
+
+app.post("/deanConfirm",function(req,res){
+        dean.update({_id:req.body.confirmId},{confirm:true},function(err,raw){
+                if (err) {
+                        console.log(err);
+                }
+                });
+        res.send(req.body.confirmId);
+});
+
+app.post("/deanRemove",function(req,res){
+        dean.remove({_id:req.body.removeId},function(err,data){
+                if(err)
+                        console.log(err);
+        });
+        res.send(req.body.removeId);
 });
 
 app.listen(5000);
