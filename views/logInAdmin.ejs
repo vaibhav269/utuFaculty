@@ -1,0 +1,28 @@
+<!Doctype html>
+<html>
+<link href="stylesheets/adminControls.css" rel="stylesheet"></link>
+<head>
+        <title>Admin Controls</title>
+        <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+        <script src="/scripts/scriptAdminControls.js"></script>
+</head>
+<body>
+        <h1>Deans for confirmation are :-</h1>
+        <div id="deanContainer">
+                <% for(var i=0;i<data.length;i++){ %>
+                        <div id="dean<%=data[i]._id %>" class="dean"><!--adding dean's _id  to it's container to uniquely identify-->
+                                <h1><%=data[i].name%></h1>
+                                <p><%=data[i].offEmail%></p>
+                                <p><%=data[i].mobile%></p>
+                                <p><%=data[i].branch%></p>
+                                <p><%=data[i].expYears%> Year(s) <%=data[i].expMonths%> month(s) Experience</p>
+                                <p class="title"><%=data[i].CollegeName%></p>
+
+                                <!--sending dean's _id of dean to by using id property-->
+                                <p><button class="buttonConfirm" id="buttonConfirm<%=data[i]._id %>" onclick="confirmDean(this)">Recommend</button></p>
+                                <p><button class="buttonRemove" id="buttonRemove<%=data[i]._id %>" onclick="removeDean(this)">Remove</button></p>
+                        </div>
+                <%}%>
+        </div>
+</body>
+</html>
