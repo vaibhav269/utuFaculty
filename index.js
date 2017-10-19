@@ -69,11 +69,20 @@ var adminSchema=new mongoose.Schema({
                 designation:{type: String,required: true,trim: true}
 });
 
+var collegeSchema=new mongoose.Schema({
+        name:{type:String,required:true,trim:true},
+        location:{type:String,required:true,trim:true},
+        lat:{type: Number,required: true,trim: true},
+        lng:{type: Number,required: true,trim: true},
+        externalFaculty: {type: mongoose.Schema.Types.ObjectId, ref: 'faculty' },
+        internalFaculty: { type: mongoose.Schema.Types.ObjectId, ref: 'faculty' }
+});
+
 var faculty=mongoose.model('faculty',facultySchema);
 var hod=mongoose.model('hod',hodSchema);
 var dean=mongoose.model('dean',deanSchema);
 var admin=mongoose.model('admin',adminSchema);
-
+var college=mongoose.model('college',collegeSchema);
 //database connection end
 
 app.get('/',function(req,res){
@@ -334,6 +343,18 @@ app.post("/deanRemove",function(req,res){
                         console.log(err);
         });
         res.send(req.body.removeId);
+});
+
+app.post('/collegeEnter',function(req,res){
+        college.create(req.body, function (err, user) {        //storing all data along with hashed password
+                if (err){
+                        console.log(err);
+                }
+                else{
+                        console.log("saved");
+                        res.send("All set");
+                }
+    });
 });
 
 app.listen(5000);
