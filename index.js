@@ -69,6 +69,11 @@ var adminSchema=new mongoose.Schema({
                 designation:{type: String,required: true,trim: true}
 });
 
+var branchSchema=new mongoose.Schema({
+        name:{type:String,required:true,trim:true},
+        practicalSubjects: [{type: String,trim:true}]
+});
+
 var collegeSchema=new mongoose.Schema({
         name:{type:String,required:true,trim:true},
         location:{type:String,required:true,trim:true},
@@ -83,6 +88,8 @@ var hod=mongoose.model('hod',hodSchema);
 var dean=mongoose.model('dean',deanSchema);
 var admin=mongoose.model('admin',adminSchema);
 var college=mongoose.model('college',collegeSchema);
+var branch=mongoose.model('practicalSubject',branchSchema);
+
 //database connection end
 
 app.get('/',function(req,res){
@@ -345,6 +352,21 @@ app.post("/deanRemove",function(req,res){
         res.send(req.body.removeId);
 });
 
+app.post('/branchEnter',function(req,res){
+        var userData={};
+        userData.name=req.body.name;
+        userData.practicalSubjects=req.body.practicalSubjects.split(',');
+        branch.create(userData, function (err, user) {        //storing all data along with hashed password
+                if (err){
+                        console.log(err);
+                }
+                else{
+                        console.log("saved");
+                        res.send("All set");
+                }
+    });
+});
+
 app.post('/collegeEnter',function(req,res){
         college.create(req.body, function (err, user) {        //storing all data along with hashed password
                 if (err){
@@ -355,6 +377,12 @@ app.post('/collegeEnter',function(req,res){
                         res.send("All set");
                 }
     });
+});
+
+app.get('/logout',function(req,res){
+        var sess=req.session;
+                sess.destroy();
+                res.redirect('/');
 });
 
 app.listen(5000);

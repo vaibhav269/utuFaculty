@@ -13,6 +13,10 @@ $(document).ready(function(){
                                         location.href="/logInHod";
                                 else if(data=="3")
                                         location.href="/logInDean";
+                                else if(data=="4")
+                                        location.href="/logInAdmin";
+                                else
+                                        alert(data);
                                 }
                 });
         });

@@ -66,6 +66,16 @@ $(document).ready(function(){
                                 $("#collegeDetailsContainer").show();
                 });
 
+
+                $("#enterBranchDetails").on('click',function(){
+                                $(".containers").hide();
+                                $("#branchDetailsContainer").show();
+                });
+
+                $("#logout").on('click',function(){
+                        location.href='/logout';
+                });
+
                 $("#collegeEnterForm").submit(function(event){
                         event.preventDefault();                                 //to stop form from submitting
                         var formData=$("#collegeEnterForm").serialize();
@@ -79,6 +89,22 @@ $(document).ready(function(){
                                         $("#collegeName").val("");
                                         $("#lat").val("");
                                         $("#lng").val("");
+                                        }
+                                });
+                });
+
+
+                $("#branchEnterForm").submit(function(event){
+                        event.preventDefault();                                 //to stop form from submitting
+                        var formData=$("#branchEnterForm").serialize();
+                        $.ajax({
+                                url:"/branchEnter",
+                                data:formData,     //retriving faculty's _id from confirmBtn's id attribute
+                                type:"post",
+                                success:function(data){
+                                        alert("Successfully entered");
+                                        $("#branchName").val("");
+                                        $("#practicalSubjects").val("");
                                         }
                                 });
                 });

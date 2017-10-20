@@ -3,11 +3,48 @@
 }
 
 body{
-        margin: 0px;
+        /margin: 0px;
+        font-family: sans-serif;
         /background-image: url("/img/nn2.jpg");
         /background-size: 100% 87vh;
         /background-repeat: no-repeat;
         /background-position: 0vw 13vh;
+}
+#navigation {
+        /border:2px solid black;
+        text-align: center;
+        padding: 10px;
+}
+
+#navigation .navBtn{
+        width: auto;
+        background-color: red;
+        display: inline;
+        color:white;
+        margin:10px;
+}
+
+h1{
+        text-align: center;
+}
+
+.containers{
+        margin:10px;
+        transform:scale(0);
+        animation: containerShow 1s forwards;
+}
+
+@keyframes containerShow {
+    from {transform:scale(0)}
+    to {transform:scale(1)}
+}
+
+#hodContainer{
+                display: block;
+}
+
+#hodContainer{
+        display:none;
 }
 
 #facultyContainer .faculty,#hodContainer .hod{
@@ -18,7 +55,12 @@ body{
         max-width: 300px;
         margin: 20px;
         text-align: center;
-        font-family: arial;
+        font-family: sans-serif;
+}
+
+#facultyContainer #facultyDataContainer,#hodContainer #hodDataContainer{
+        display: block;
+        border:3px solid black;
 }
 
 .title {

@@ -83,12 +83,12 @@ button:hover, a:hover {
 }
 
 
-#collegeDetailsContainer{
+#collegeDetailsContainer,#branchDetailsContainer{
                 display:none;
                 text-align: center;
 }
 
-#collegeDetailsContainer #collegeEnterForm{
+#collegeDetailsContainer #collegeEnterForm,#branchDetailsContainer #branchEnterForm{
         border:3px solid black;
         min-width: 25vw;
         text-align: center;
@@ -99,7 +99,7 @@ button:hover, a:hover {
         padding:10px;
 }
 
-#collegeDetailsContainer #collegeEnterForm .inputField{
+ .inputField{
         display: block;
         min-width:100%;
         font-size: 140%;
@@ -110,13 +110,13 @@ button:hover, a:hover {
         padding-bottom:5px;
 }
 
-#collegeDetailsContainer #collegeEnterForm .labelField{
+ .labelField{
         text-align: left;
         margin-bottom: 5px;
         color:black;
 }
 
-#collegeDetailsContainer #collegeEnterForm input[type="submit"]{
+input[type="submit"]{
         cursor: pointer;
         width: 90%;
         /background-color: red;

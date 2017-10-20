@@ -13,6 +13,7 @@
                 <button class= "navBtn" id="enterBranchDetails">Enter Branch Details</button>
                 <button class= "navBtn" id="enterCollegeDetails">Enter College Details</button>
                 <button class= "navBtn" id="AssignExternalExaminers">Assign External Examiners</button>
+                <button class= "navBtn" id="logout">Logout</button>
           </div>
         <div id="deanContainer" class="containers">
                 <h1>Select/Reject the Deans from here</h1>
@@ -34,13 +35,24 @@
                 <%}%>
         </div>
 
+        <div id="branchDetailsContainer" class="containers">
+                <h1>Enter the branch details here</h1>
+                        <form id="branchEnterForm" method="POST">
+                                <label for="branchName" class="labelField">Enter Branch's Name</label>
+                                <input type="text" name="name" id="branchName" class="inputField" placeholder="Branch Name"></input>
+                                <label for="branchPracticalSubjects">Enter all the practical subjects seprated by ,(comma)</label>
+                                <input type="text" name="practicalSubjects" id="practicalSubjects" class="inputField" placeholder></input>
+                                <input type="submit" id="branchDetailsADD" value="ADD"></input>
+                        </form>
+        </div>
+
         <div id="collegeDetailsContainer" class="containers">
                 <h1>Enter the college here to Affliate to UTU</h1>
                         <form id="collegeEnterForm" method="POST">
                                 <label for="collegeName" class="labelField">Enter College's Name</label>
                                 <input type="text" name="name" id="collegeName" class="inputField" placeholder="College Name"></input>
                                 <label for="collegeLocation">Search the college by it's name for location</label>
-                                <input type="text" name="location" id="collegeLocation" class="inputField" placeholder></input>
+                                <input type="text" name="location" id="collegeLocation" class="inputField" placeholder></input>                                
                                 <input type="hidden" name="lat" id="lat" placeholder="lat"></input>
                                 <input type="hidden" name="lng" id="lng" placeholder="lng"></input>
                                 <input type="submit" id="collegeDetailsADD" value="ADD"></input>

@@ -41,3 +41,20 @@ function removeHod(removeBtn){
                         }
                 });
 }
+
+$(document).ready(function(){
+                $("#showHods").on('click',function(){
+                                $(".containers").hide();
+                                $("#hodContainer").show();
+                });
+
+                $("#showFaculties").on('click',function(){
+                                $(".containers").hide();
+                                $("#facultyContainer").show();
+                });
+                
+                $("#logout").on('click',function(){
+                        location.href='/logout';
+                });
+
+});
