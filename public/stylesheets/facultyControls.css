@@ -20,22 +20,138 @@ body{
 #navigation .navBtn{
         width: auto;
         background-color: red;
-        display: inline;
         color:white;
         margin:10px;
-}
-
-h1{
-        text-align: center;
-}
-
-button {
         border: none;
         outline: 0;
         display: inline-block;
         padding: 8px;
         text-align: center;
         cursor: pointer;
-        width: 100%;
         font-size: 18px;
+}
+
+h1{
+        text-align: center;
+}
+
+.containers{
+        margin:10px;
+        transform:scale(0);
+        animation: containerShow 1s forwards;
+}
+
+.dutiesContainers{
+        transform:scale(0);
+        animation: containerShow 1s forwards;
+}
+
+@keyframes containerShow {
+    from {transform:scale(0)}
+    to {transform:scale(1)}
+}
+
+#facultyDataContainer{
+        font-size: 150%;
+        text-align:center;
+        display: none;
+}
+
+#facultyOwnData{
+        padding:10px;
+        border:2px solid green;
+        display: inline-block;
+}
+
+#facultyOwnData td{
+        text-align: left;
+}
+
+#facultyOwnData .key{
+        padding-right: 20px;
+        border-right:2px dashed black;
+        color:red;
+}
+
+#facultyOwnData .value{
+        padding-left:20px;
+        color:brown;
+}
+
+#facultyOwnData .editBtn,#facultyOwnData .saveBtn{
+        cursor: pointer;
+        background-color:transparent;
+        color:blue;
+        border:none;
+}
+
+#dutiesContainer #dutiesContainerNav{
+        text-align: center;
+        margin-bottom: 10px;
+}
+
+#dutiesContainer #dutiesContainerNav .dutiesNavBtn{
+        border:none;
+        background-color: green;
+        color:white;
+        width:20%;
+        font-size: 110%;
+        cursor: pointer;
+}
+
+#externalExaminer{
+        text-align: center;
+        display: none;
+}
+
+#internalExaminer{
+        text-align: center;
+        display: none;
+}
+
+#externalExaminerFeedbackForm,#internalExaminerFeedbackForm{
+        border:3px solid brown;
+        min-width: 50vw;
+        max-width: 80vw;
+        text-align: left;
+        background-color: white;
+        border-radius: 10px;
+        font-size: 100%;
+        display: inline-block;
+        padding:10px;
+}
+
+#externalExaminerFeedbackForm .inputField,#internalExaminerFeedbackForm .inputField{
+        display: block;
+        min-width:100%;
+        font-size: 140%;
+        border-radius:4px;
+        border: 1px solid #e5e5e5;
+        margin-bottom: 15px;
+        padding-top:5px;
+        padding-bottom:5px;
+        padding-left: 15px;
+        padding-right: 15px;
+        text-align: left;
+        overflow: visible;
+}
+
+#externalExaminerFeedbackForm .labelField,#internalExaminerFeedbackForm .labelField{
+        margin-bottom: 5px;
+        color:grey;
+        padding-left: 15px;
+        padding-right: 15px;
+        text-align: left;
+        overflow: visible;
+}
+
+input[type="submit"]{
+        cursor: pointer;
+        width: 100%;
+        background-color: purple;
+        border: none;
+        font-size: 130%;
+        color:white;
+        margin-bottom: 15px;
+        padding: 5px;
 }

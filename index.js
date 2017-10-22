@@ -29,6 +29,11 @@ var facultySchema=new mongoose.Schema({
         expYears:{type: Number,required: true,trim: true},
         expMonths:{type: Number,required: true,trim: true},
         branch:{type: String,required: true,trim: true},
+
+        practicalSubjects: [{type:String}],
+        internalExam: [{type:String}],
+        externalExam: [{collegeName:String,collegeLocation:String,subject:String}],
+
         confirm0:{type:Boolean},
         confirm:{type:Boolean}
 },{timestamps:true});
@@ -83,12 +88,47 @@ var collegeSchema=new mongoose.Schema({
         internalFaculty: { type: mongoose.Schema.Types.ObjectId, ref: 'faculty' }
 });
 
+var internalFacultyFeedbackSchema=new mongoose.Schema({
+        externalName:{type:String,required:true,trim:true},
+        CollegeName:{type:String,required:true,trim:true},
+        CollegeCode:{type:String,required:true,trim:true},
+        branch:{type:String,required:true,trim:true},
+        paperCode:{type:String,required:true,trim:true},
+        paperName:{type:String,required:true,trim:true},
+        examDate:{type: Date,required: true,trim: true},
+        numOfStudents:{type: Number,required: true,trim: true},
+        arrivalDate:{type: Date,required: true,trim: true},
+        arrivalTime:{type:String,required:true,trim:true},
+        departureDate:{type: Date,required: true,trim: true},
+        departureTime:{type:String,required:true,trim:true},
+        externalExaminerFeedback:{type:String,required:true,trim:true}
+});
+
+var externalFacultyFeedbackSchema=new mongoose.Schema({
+        CollegeName:{type:String,required:true,trim:true},
+        CollegeCode:{type:String,required:true,trim:true},
+        branch:{type:String,required:true,trim:true},
+        paperCode:{type:String,required:true,trim:true},
+        paperName:{type:String,required:true,trim:true},
+        examDate:{type: Date,required: true,trim: true},
+        numOfStudents:{type: Number,required: true,trim: true},
+        arrivalDate:{type: Date,required: true,trim: true},
+        arrivalTime:{type:String,required:true,trim:true},
+        departureDate:{type: Date,required: true,trim: true},
+        departureTime:{type:String,required:true,trim:true},
+        internalExaminerFeedback:{type:String,required:true,trim:true},
+        collegeFeedback:{type:String,required:true,trim:true}
+});
+
 var faculty=mongoose.model('faculty',facultySchema);
 var hod=mongoose.model('hod',hodSchema);
 var dean=mongoose.model('dean',deanSchema);
 var admin=mongoose.model('admin',adminSchema);
 var college=mongoose.model('college',collegeSchema);
 var branch=mongoose.model('practicalSubject',branchSchema);
+var internalFacultyFeedback=mongoose.model('internalFacultyFeedback',internalFacultyFeedbackSchema);
+var externalFacultyFeedback=mongoose.model('externalFacultyFeedback',externalFacultyFeedbackSchema);
+
 
 //database connection end
 
@@ -97,10 +137,10 @@ app.get('/',function(req,res){
         if(sess.offEmail){
                 if(sess.designation=="1")
                         res.redirect('/logInFaculty');
-                if(sess.designation=="1")
-                        res.redirect('/logInFaculty');
-                if(sess.designation=="1")
-                        res.redirect('/logInFaculty');
+                else if(sess.designation=="2")
+                        res.redirect('/logInHod');
+                else if(sess.designation=="3")
+                        res.redirect('/logInDean');
         }
         else
                 res.render('home');
@@ -218,7 +258,11 @@ app.post('/logInForm',function(req,res){
 app.get('/logInFaculty',function(req,res){
         sess=req.session;
         if(sess.offEmail){
-                res.render('logInFaculty');
+                faculty.findOne({offEmail:sess.offEmail},function(err,data){
+                        data.externalExam=[{collegeName:"COER",collegeLocation:"Fuck Fuck",subject:"computer"},{collegeName:"COER",collegeLocation:"Fuck Fuck",subject:"computer"}];
+                        data.internalExam=["hello","brother"];
+                        res.render('logInFaculty',{data:data});
+                })
         }
         else
                 res.redirect('/');
@@ -251,6 +295,59 @@ app.post("/facultyConfirm",function(req,res){
                 }
                 });
         res.send(req.body.confirmId);
+});
+
+app.post("/facultyUpdate",function(req,res){
+        if(req.body.isExp=="true"){
+                var propertyName0=req.body['propertyName[0]'];
+                var propertyName1=req.body['propertyName[1]'];
+                var propertyValue0=req.body['propertyValue[0]'];
+                var propertyValue1=req.body['propertyValue[1]'];
+                var updatedData={};
+                updatedData[propertyName0]=propertyValue0;
+                updatedData[propertyName1]=propertyValue1;
+
+                faculty.update({offEmail:req.body.offEmail},updatedData,function(err,raw){
+                        if (err) {
+                                console.log(err);
+                        }
+                        else{
+                                res.send("All set");
+                        }
+                });
+        }
+
+        else if(req.body.propertyName=="practicalSubjects"){
+                var propertyName=req.body.propertyName;
+                var propertyValue=req.body.propertyValue.split(',');
+                propertyValue.forEach(function(data){
+                        faculty.update({offEmail:req.body.offEmail},{$push:{practicalSubjects:data}},function(err,raw){
+                                if (err) {
+                                        console.log(err);
+                                }
+                                else{
+                                        res.send("All set");
+                                }
+                        });
+                });
+
+        }
+
+        else{
+                var propertyName=req.body.propertyName;
+                var propertyValue=req.body.propertyValue;
+                var updatedData={};
+                updatedData[propertyName]=propertyValue;
+
+                faculty.update({offEmail:req.body.offEmail},updatedData,function(err,raw){
+                        if (err) {
+                                console.log(err);
+                        }
+                        else{
+                                res.send("All set");
+                        }
+                });
+        }
 });
 
 app.post("/facultyRemove",function(req,res){
@@ -383,6 +480,32 @@ app.get('/logout',function(req,res){
         var sess=req.session;
                 sess.destroy();
                 res.redirect('/');
+});
+
+
+app.post('/externalFeedback',function(req,res){
+        console.log(req.body);
+        var userData=req.body;
+        externalFacultyFeedback.create(userData, function (err, user) {        //storing all data along with hashed password
+                if (err){
+                        console.log(err);
+                }
+                else{
+                        res.send("All Set");
+                }
+    });
+});
+
+app.post('/internalFeedback',function(req,res){
+        var userData=req.body;
+        internalFacultyFeedback.create(userData, function (err, user) {        //storing all data along with hashed password
+                if (err){
+                        console.log(err);
+                }
+                else{
+                        res.send("All Set");
+                }
+    });
 });
 
 app.listen(5000);

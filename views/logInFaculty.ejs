@@ -2,15 +2,157 @@
 <html>
 <head>
         <link href="stylesheets/facultyControls.css" rel="stylesheet"></link>
-
         <title>Faculty</title>
         <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
         <script src="/scripts/scriptFacultyControls.js"></script>
 </head>
 <body>
         <div id="navigation">
+                <button class= "navBtn" id="dutiesAssigned">Duties Assigned</button>
+                <button class= "navBtn" id="editProfile">Edit Profile</button>
                 <button class= "navBtn" id="logout">Logout</button>
-          </div>
-                <h1>Yes, I am a faculty</h1>
+        </div>
+
+         <div id="facultyDataContainer" class="containers">
+                 <form id="facultyOwnData">
+                 <table>
+                        <tr>
+                                <td class="key">Name</td>
+                                 <td class="value" id="name"> <%=data.name%> </td>
+                                <td><button class="editBtn" id="nameEditBtn">Edit</button><button class="saveBtn" id="nameSaveBtn">Save</button></td>
+                        </tr>
+
+                        <tr>
+                                <td class="key">Personal Email</td>
+                                <td class="value" id="perEmail"><%=data.perEmail%></td>
+                                <td><button class="editBtn" id="perEmailEditBtn">Edit</button><button class="saveBtn" id="perEmailSaveBtn">Save</button></td>
+                        </tr>
+
+                        <tr>
+                                <td class="key">Mobile</td>
+                                 <td class="value" id="mobile"><%=data.mobile%></td>
+                                 <td><button class="editBtn" id="mobileEditBtn">Edit</button><button class="saveBtn" id="mobileSaveBtn">Save</button></td>
+                        </tr>
+
+                        <tr>
+                                <td class="key">Experience</td>
+                                 <td class="value" id="exp"><span id="expYears"><%=data.expYears%></span> Year(s)<span id="expMonths"> <%=data.expMonths%> </span>month(s)</td>
+                                 <td><button class="editBtn" id="expEditBtn">Edit</button><button class="saveBtn" id="expSaveBtn">Save</button></td>
+                        </tr>
+
+                        <tr>
+                                <td class="key">Interested Practical Subjects</td>
+                                 <td class="value" id="practicalSubjects"><%=data.practicalSubjects%></td>
+                                 <td><button class="editBtn" id="practicalSubjectsEditBtn">Edit</button><button class="saveBtn" id="practicalSubjectsSaveBtn">Save</button></td>
+                        </tr>
+
+                        <tr>
+                                <td  id="offEmail" style="display:none"><%=data.offEmail%></td>
+                        </tr>
+                 </table>
+         </form>
+         </div>
+
+         <div id="dutiesContainer" class="containers">
+                 <div id="dutiesContainerNav">
+                          <% data.externalExam.forEach(function(data){%>
+                                  <button class="dutiesNavBtn externalBtn">Feedback as External Examiner</button>
+                          <%}) %>
+
+                          <% data.internalExam.forEach(function(data){%>
+                                  <button class="dutiesNavBtn internalBtn" >Feedback as Internal Examiner</button>
+                          <%}) %>
+                 </div>
+
+                 <div id="externalExaminer" class="dutiesContainers">
+                         <form id="externalExaminerFeedbackForm">
+                                        <label for="CollegeName"  class="labelField">Enter the college name</label>
+                                        <input type="text" placeholder="College Name" name="CollegeName" class="inputField"> </input>
+
+                                         <label for="CollegeCode" class="labelField">Enter the college Code</label>
+                                         <input type="text" placeholder="College Code" name="CollegeCode" class="inputField"> </input>
+
+                                         <label for="practicalPaperBranch" class="labelField">Enter the branch</label>
+                                         <input type="text" placeholder="Branch Name" name="branch" class="inputField"> </input>
+
+                                         <label for="practicalPaperCode" class="labelField">Enter the paper code</label>
+                                         <input type="text" placeholder="Paper Code" name="paperCode" class="inputField"> </input>
+
+                                         <label for="practicalPaperName" class="labelField">Enter the paper Name</label>
+                                         <input type="text" placeholder="Paper Name" name="paperName" class="inputField"> </input>
+
+                                         <label for="dateOfExam" class="labelField">Enter the date of Exam</label>
+                                         <input type="date" placeholder="YYYY-MM-DD" name="examDate" class="inputField"> </input>
+
+                                         <label for="numOfStudents" class="labelField">Enter the number of Students</label>
+                                         <input type="Number" placeholder="No of Students" name="numOfStudents" class="inputField"> </input>
+
+                                         <label for="dateOfArriving" class="labelField">Enter the date of Arriving</label>
+                                         <input type="date" placeholder="YYYY-MM-DD" name="arrivalDate" class="inputField"> </input>
+
+                                         <label for="timeOfArriving" class="labelField">Enter the time of Arriving</label>
+                                         <input type="time" placeholder="- -:- -" name="arrivalTime" class="inputField"> </input>
+
+                                         <label for="dateOfDeparting" class="labelField">Enter the date of Departing</label>
+                                         <input type="date" placeholder="YYYY-MM-DD" name="departureDate" class="inputField"> </input>
+
+                                         <label for="timeOfDeparting" class="labelField">Entert the time of departing</label>
+                                         <input type="time" placeholder="- -:- -" name="departureTime" class="inputField"> </input>
+
+                                         <label for="internalExaminerFeedback" class="labelField">Enter Feedback for Internal Examiner</label>
+                                         <textarea row="2" col="40" class="inputField" name="internalExaminerFeedback"></textarea>
+
+                                         <label for="collegeFeedback" class="labelField">Enter the feedback for college</label>
+                                         <textarea row="2" col="40" class="inputField" name="collegeFeedback"></textarea>
+
+                                         <input type="submit" value="Submit" id="externalFeedBackSubmit"></input>
+                         </form>
+                </div>
+
+                 <div id="internalExaminer" class="dutiesContainers">
+                         <form id="internalExaminerFeedbackForm">
+                                        <label for="examinerName"  class="labelField">Enter the External Examiner's name</label>
+                                        <input type="text" placeholder="External Examiner's Name" name="externalName" class="inputField"> </input>
+
+                                        <label for="CollegeName"  class="labelField">Enter the college name</label>
+                                        <input type="text" placeholder="College Name" name="CollegeName" class="inputField"> </input>
+
+                                         <label for="CollegeCode" class="labelField">Enter the college Code</label>
+                                         <input type="text" placeholder="College Code" name="CollegeCode" class="inputField"> </input>
+
+                                         <label for="practicalPaperBranch" class="labelField">Enter the branch</label>
+                                         <input type="text" placeholder="Branch Name" name="branch" class="inputField"> </input>
+
+                                         <label for="practicalPaperCode" class="labelField">Enter the paper code</label>
+                                         <input type="text" placeholder="Paper Code" name="paperCode" class="inputField"> </input>
+
+                                         <label for="practicalPaperName" class="labelField">Enter the paper Name</label>
+                                         <input type="text" placeholder="Paper Name" name="paperName" class="inputField"> </input>
+
+                                         <label for="dateOfExam" class="labelField">Enter the date of Exam</label>
+                                         <input type="date" placeholder="YYYY-MM-DD" name="examDate" class="inputField"> </input>
+
+                                         <label for="numOfStudents" class="labelField">Enter the number of Students</label>
+                                         <input type="Number" placeholder="No of Students" name="numOfStudents" class="inputField"> </input>
+
+                                         <label for="dateOfArriving" class="labelField">Enter the date of Arriving</label>
+                                         <input type="date" placeholder="YYYY-MM-DD" name="arrivalDate" class="inputField"> </input>
+
+                                         <label for="timeOfArriving" class="labelField">Enter the time of Arriving</label>
+                                         <input type="time" placeholder="- -:- -" name="arrivalTime" class="inputField"> </input>
+
+                                         <label for="dateOfDeparting" class="labelField">Enter the date of Departing</label>
+                                         <input type="date" placeholder="YYYY-MM-DD" name="departureDate" class="inputField"> </input>
+
+                                         <label for="timeOfDeparting" class="labelField">Entert the time of departing</label>
+                                         <input type="time" placeholder="- -:- -" name="departureTime" class="inputField"> </input>
+
+                                         <label for="externalExaminerFeedback" class="labelField">Enter Feedback for External Examiner</label>
+                                         <textarea row="2" col="40" class="inputField" name="externalExaminerFeedback"></textarea>
+
+                                         <input type="submit" value="Submit" id="internalFeedBackSubmit"></input>
+                         </form>
+                 </div>
+         </div>
 </body>
 </html>
