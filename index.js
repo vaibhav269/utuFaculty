@@ -259,8 +259,11 @@ app.get('/logInFaculty',function(req,res){
         sess=req.session;
         if(sess.offEmail){
                 faculty.findOne({offEmail:sess.offEmail},function(err,data){
-                        data.externalExam=[{collegeName:"COER",collegeLocation:"Fuck Fuck",subject:"computer"},{collegeName:"COER",collegeLocation:"Fuck Fuck",subject:"computer"}];
+                        /*demo values here for code testing 
+                        
+                        data.externalExam=[{collegeName:"COER",collegeLocation:"Fuck Fuck",subject:"computer"},{collegeName:"COER",collegeLocation:"Fuck Fuck",subject:"computer"}];            
                         data.internalExam=["hello","brother"];
+                        */
                         res.render('logInFaculty',{data:data});
                 })
         }
