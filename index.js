@@ -4,6 +4,7 @@ var bcrypt = require('bcrypt');
 var bodyParser=require('body-parser');
 var mongoose = require('mongoose');
 var session = require('express-session');
+var automateExternals = require('./automate.js');
 
 
 app.use(express.static('public'));
@@ -146,8 +147,8 @@ app.get('/',function(req,res){
                 res.render('home');
 });
 
-/*app.get('/admin',function(req,res){
-        userData=req.query;
+app.post('/admin',function(req,res){
+        userData=req.body;
         bcrypt.hash(userData.pass, 10, function (err, hash){            //hashing the user's password before hashing
                 if (err) {
                         console.log("error while hashing");
@@ -165,7 +166,7 @@ app.get('/',function(req,res){
                 }
         })
 });
-*/
+
 
 
 
@@ -509,6 +510,14 @@ app.post('/internalFeedback',function(req,res){
                         res.send("All Set");
                 }
     });
+});
+
+app.post('/automate',function(req,res){
+        srcCollege = "College of engineering roorkee";
+        automateExternals.automate(srcCollege,faculty,college,branch,function(){
+                console.log("automate practicals...");
+                res.send("Practicals Automated");
+        });
 });
 
 app.listen(5000);
