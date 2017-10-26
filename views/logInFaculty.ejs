@@ -64,6 +64,24 @@
                           <%}) %>
                  </div>
 
+                 <div id="dutiesInfo">
+                         <% var len=data.externalExam.length+data.internalExam.length
+                         if(len==0)
+                         {%>
+                                 <div id="dutiesInfoNoDuty">NO duty is assigned</div>
+                        <%}
+                        else{%>
+                                <div id="dutiesInfoYesDuty">duties assigned are : -  </div>
+                                        <% data.externalExam.forEach(function(data){%>
+                                                <p>External Faculty At  <%=data.collegeName%> of subject <%=data.subject%></p>
+                                        <%}) %>
+
+                                        <% data.internalExam.forEach(function(data){%>
+                                                <p>Internal Faculty for subject <%=data%></p>
+                                        <%}) %>
+                        <%}%>
+                 </div>
+
                  <div id="externalExaminer" class="dutiesContainers">
                          <form id="externalExaminerFeedbackForm">
                                         <label for="CollegeName"  class="labelField">Enter the college name</label>
