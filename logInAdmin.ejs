@@ -1,0 +1,66 @@
+<!Doctype html>
+<html>
+<head>
+        <link href="stylesheets/adminControls.css" rel="stylesheet"></link>
+        <title>Admin Controls</title>
+        <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+        <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyC3ii7KbgyAQWq3c9K2jiE_VhSM_iRBSUM&libraries=places&callback=initMap" defer></script>
+        <script src="/scripts/scriptAdminControls.js"></script>
+</head>
+<body>
+        <div id="navigation">
+                <button class= "navBtn" id="showDeans">Show Deans</button>
+                <button class= "navBtn" id="enterBranchDetails">Enter Branch Details</button>
+                <button class= "navBtn" id="enterCollegeDetails">Enter College Details</button>
+                <button class= "navBtn" id="assignExaminers">Assign Examiners</button>
+                <button class= "navBtn" id="logout">Logout</button>
+          </div>
+        <div id="deanContainer" class="containers">
+                <h1>Select/Reject the Deans from here</h1>
+                <div id="deanDataContainer">
+                <% for(var i=0;i<data.length;i++){ %>
+                        <div id="dean<%=data[i]._id %>" class="dean"><!--adding dean's _id  to it's container to uniquely identify-->
+                                <h1><%=data[i].name%></h1>
+                                <p><%=data[i].offEmail%></p>
+                                <p><%=data[i].mobile%></p>
+                                <p><%=data[i].expYears%> Year(s) <%=data[i].expMonths%> month(s) Experience</p>
+                                <p class="title"><%=data[i].CollegeName%></p>
+
+                                <!--sending dean's _id of dean to by using id property-->
+                                <p><button class="buttonConfirm" id="buttonConfirm<%=data[i]._id %>" onclick="confirmDean(this)">Confirm</button></p>
+                                <p><button class="buttonRemove" id="buttonRemove<%=data[i]._id %>" onclick="removeDean(this)">Remove</button></p>
+                        </div>
+                </div>
+                <%}%>
+        </div>
+
+        <div id="branchDetailsContainer" class="containers">
+                <h1>Enter the branch details here</h1>
+                        <form id="branchEnterForm" method="POST">
+                                <label for="branchName" class="labelField">Enter Branch's Name</label>
+                                <input type="text" name="name" id="branchName" class="inputField" placeholder="Branch Name"></input>
+                                <label for="branchPracticalSubjects">Enter all the practical subjects seprated by ,(comma)</label>
+                                <input type="text" name="practicalSubjects" id="practicalSubjects" class="inputField" placeholder></input>
+                                <input type="submit" id="branchDetailsADD" value="ADD"></input>
+                        </form>
+        </div>
+
+        <div id="collegeDetailsContainer" class="containers">
+                <h1>Enter the college here to Affliate to UTU</h1>
+                        <form id="collegeEnterForm" method="POST">
+                                <label for="collegeName" class="labelField">Enter College's Name</label>
+                                <input type="text" name="name" id="collegeName" class="inputField" placeholder="College Name"></input>
+
+                                <label for="collegeCode" class="labelField">Enter College's Code</label>
+                                <input type="text" name="code" id="collegeCode" class="inputField" placeholder="College Code"></input>
+
+                                <label for="collegeLocation" class="labelField">Search the college by it's name for location</label>
+                                <input type="text" name="location" id="collegeLocation" class="inputField" placeholder></input>
+                                <input type="hidden" name="lat" id="lat" placeholder="lat"></input>
+                                <input type="hidden" name="lng" id="lng" placeholder="lng"></input>
+
+                                <input type="submit" id="collegeDetailsADD" value="ADD"></input>
+                        </form>
+        </div>
+</body>
+</html>
