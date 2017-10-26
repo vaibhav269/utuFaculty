@@ -109,4 +109,16 @@ $(document).ready(function(){
                                         }
                                 });
                 });
+
+                $("#assignExaminers").on('click',function(event){
+                        var nothing={owners:"vaibhav & piyush"};
+                        $.ajax({
+                                url:"/automate",
+                                data:nothing,     //retriving faculty's _id from confirmBtn's id attribute
+                                type:"post",
+                                success:function(data){
+                                        alert("Successfully Assigned examiners");
+                                        }
+                                });
+                });
 });
