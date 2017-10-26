@@ -5,7 +5,21 @@ var bodyParser=require('body-parser');
 var mongoose = require('mongoose');
 var session = require('express-session');
 var automateExternals = require('./automate.js');
+var nodemailer = require("nodemailer");
 
+var transporter = nodemailer.createTransport({
+  service: 'gmail',
+  host: "smtp.gmail.com",
+  auth: {
+    user: 'yourEmail',
+    pass: 'yourPassword'
+  }
+});
+
+var mailOptions = {
+                from: 'yourEmail',
+                text: 'kindly report to the campus within 2 days for further formalities'
+        };
 
 app.use(express.static('public'));
 app.use(bodyParser.urlencoded({extended:false}));
@@ -151,7 +165,6 @@ app.get('/',function(req,res){
                         data.branch=branchData;
                         college.find({},{name:1,code:1,_id:0},function(err,collegeData){
                                 data.college=collegeData;
-                                console.log(data);
                                 res.render('home',{data:data});
                         });
                 });
@@ -245,7 +258,7 @@ app.post('/logInForm',function(req,res){
         if(req.body.designation=="4")
                         model=admin;
 
-          model.findOne({offEmail:req.body.offEmail},function(err,userData){
+          model.findOne({$and:[{offEmail:req.body.offEmail},{confirm:true}]},function(err,userData){
                                 if(userData!=null)
                                 {
                                               bcrypt.compare(req.body.pass,userData.pass, function (err, result) {
@@ -305,9 +318,22 @@ app.post("/facultyConfirm0",function(req,res){
 
 app.post("/facultyConfirm",function(req,res){
         faculty.update({_id:req.body.confirmId},{confirm:true},function(err,raw){
-                if (err) {
-                        console.log(err);
-                }
+                        if (err) {
+                                console.log(err);
+                        }
+                        else{
+                                faculty.findOne({_id:req.body.confirmId},function(err,data){
+                                                mailOptions.to=data.offEmail;
+                                                mailOptions.subject="Job confirmation from college "+data.CollegeName;
+                                                transporter.sendMail(mailOptions, function(error, info){
+                                                        if (error) {
+                                                        console.log(error);
+                                                        } else {
+                                                        console.log('Email sent: ' + info.response);
+                                                        }
+                                                });
+                                });
+                        }
                 });
         res.send(req.body.confirmId);
 });
@@ -403,6 +429,19 @@ app.post("/hodConfirm",function(req,res){
                 if (err) {
                         console.log(err);
                 }
+                else{
+                        hod.findOne({_id:req.body.confirmId},function(err,data){
+                                        mailOptions.to=data.offEmail;
+                                        mailOptions.subject="Job confirmation from college "+data.CollegeName;
+                                        transporter.sendMail(mailOptions, function(error, info){
+                                                if (error) {
+                                                console.log(error);
+                                                } else {
+                                                console.log('Email sent: ' + info.response);
+                                                }
+                                        });
+                        });
+                }
                 });
         res.send(req.body.confirmId);
 });
@@ -451,6 +490,19 @@ app.post("/deanConfirm",function(req,res){
         dean.update({_id:req.body.confirmId},{confirm:true},function(err,raw){
                 if (err) {
                         console.log(err);
+                }
+                else{
+                        dean.findOne({_id:req.body.confirmId},function(err,data){
+                                        mailOptions.to=data.offEmail;
+                                        mailOptions.subject="Job confirmation from college "+data.CollegeName;
+                                        transporter.sendMail(mailOptions, function(error, info){
+                                                if (error) {
+                                                console.log(error);
+                                                } else {
+                                                console.log('Email sent: ' + info.response);
+                                                }
+                                        });
+                        });
                 }
                 });
         res.send(req.body.confirmId);
