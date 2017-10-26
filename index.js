@@ -523,7 +523,7 @@ app.post('/branchEnter',function(req,res){
         var userData={};
         userData.name=req.body.name;
         userData.practicalSubjects=req.body.practicalSubjects.split(',');
-        branch.create(userData, function (err, user) {        //storing all data along with hashed password
+        branch.create(userData, function (err, user) {        //storing all data 
                 if (err){
                         console.log(err);
                 }
@@ -590,7 +590,7 @@ app.post('/automate',function(req,res){
                                 console.log("automate practicals...");
                                 res.send("Practicals Automated");
                         });
-                      //  console.log(srcCollege);
+                     //  console.log(srcCollege);
                 }
         });
 });
