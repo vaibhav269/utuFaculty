@@ -12,7 +12,7 @@
                 <button class= "navBtn" id="showDeans">Show Deans</button>
                 <button class= "navBtn" id="enterBranchDetails">Enter Branch Details</button>
                 <button class= "navBtn" id="enterCollegeDetails">Enter College Details</button>
-                <button class= "navBtn" id="AssignExternalExaminers">Assign External Examiners</button>
+                <button class= "navBtn" id="assignExaminers">Assign Examiners</button>
                 <button class= "navBtn" id="logout">Logout</button>
           </div>
         <div id="deanContainer" class="containers">
@@ -27,7 +27,7 @@
                                 <p class="title"><%=data[i].CollegeName%></p>
 
                                 <!--sending dean's _id of dean to by using id property-->
-                                <p><button class="buttonConfirm" id="buttonConfirm<%=data[i]._id %>" onclick="confirmDean(this)">Recommend</button></p>
+                                <p><button class="buttonConfirm" id="buttonConfirm<%=data[i]._id %>" onclick="confirmDean(this)">Confirm</button></p>
                                 <p><button class="buttonRemove" id="buttonRemove<%=data[i]._id %>" onclick="removeDean(this)">Remove</button></p>
                         </div>
                 </div>
