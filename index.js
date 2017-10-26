@@ -72,7 +72,8 @@ var deanSchema=new mongoose.Schema({
 var adminSchema=new mongoose.Schema({
                 offEmail:{type:String,trim:true},
                 pass:{type:String},
-                designation:{type: String,required: true,trim: true}
+                designation:{type: String,required: true,trim: true},
+                confirm:{type:Boolean}
 });
 
 var branchSchema=new mongoose.Schema({
@@ -82,11 +83,12 @@ var branchSchema=new mongoose.Schema({
 
 var collegeSchema=new mongoose.Schema({
         name:{type:String,required:true,trim:true},
+        code:{type: String,required: true,trim: true},
         location:{type:String,required:true,trim:true},
         lat:{type: Number,required: true,trim: true},
         lng:{type: Number,required: true,trim: true},
         externalFaculty: {type: mongoose.Schema.Types.ObjectId, ref: 'faculty' },
-        internalFaculty: { type: mongoose.Schema.Types.ObjectId, ref: 'faculty' }
+        internalFaculty: { type: mongoose.Schema.Types.ObjectId, ref: 'faculty' },
 });
 
 var internalFacultyFeedbackSchema=new mongoose.Schema({
@@ -143,8 +145,17 @@ app.get('/',function(req,res){
                 else if(sess.designation=="3")
                         res.redirect('/logInDean');
         }
-        else
-                res.render('home');
+        else{
+                var data={};
+                branch.find({},{name:1,_id:0},function(err,branchData){
+                        data.branch=branchData;
+                        college.find({},{name:1,code:1,_id:0},function(err,collegeData){
+                                data.college=collegeData;
+                                console.log(data);
+                                res.render('home',{data:data});
+                        });
+                });
+        }
 });
 
 app.post('/admin',function(req,res){
@@ -260,9 +271,9 @@ app.get('/logInFaculty',function(req,res){
         sess=req.session;
         if(sess.offEmail){
                 faculty.findOne({offEmail:sess.offEmail},function(err,data){
-                        /*demo values here for code testing 
-                        
-                        data.externalExam=[{collegeName:"COER",collegeLocation:"Fuck Fuck",subject:"computer"},{collegeName:"COER",collegeLocation:"Fuck Fuck",subject:"computer"}];            
+                        /*demo values here for code testing
+
+                        data.externalExam=[{collegeName:"COER",collegeLocation:"Fuck Fuck",subject:"computer"},{collegeName:"COER",collegeLocation:"Fuck Fuck",subject:"computer"}];
                         data.internalExam=["hello","brother"];
                         */
                         res.render('logInFaculty',{data:data});
@@ -366,7 +377,7 @@ app.get('/logInHod',function(req,res){
         sess=req.session;
         if(sess.offEmail){
                 faculty.find({confirm0:false},null,{sort:{createdAt:-1}},function(err,data){
-                        data.forEach(function(val){                     //setting brach from code to string
+                        data.forEach(function(val){                     //setting branch from code to string
                                         if(val.branch=="1")
                                                 val.branch="CSE";
                                         else if(val.branch=="2")

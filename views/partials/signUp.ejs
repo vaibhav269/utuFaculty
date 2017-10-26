@@ -23,11 +23,15 @@
                                 </div>
 
                                 <div id="step2">
-                                        <label for="collegeName" class="labelField">Enter the college name</label>
-                                        <input type="text" class="inputField" name="CollegeName" id="signUpFieldCollegeName" placeholder="College Name" ></input>
+                                        <label for="collegeName" class="labelField">Select the college name</label>
+                                        <select class="inputField" name="CollegeName" id="signUpFieldCollegeName">
+                                                <% for(var i=0;i<data.college.length;i++){ %>
+                                                                <option data-college-code="<%=data.college[i].code%>" value="<%=data.college[i].name%>"><%=data.college[i].name%></option>
+                                                        <%}%>
+                                        </select>
 
-                                        <label for="collegeCode" class="labelField">Enter the college code</label>
-                                        <input type="text" class="inputField" name="CollegeCode" id="signUpFieldCollegeCode" placeholder="College Code" ></input>
+                                        <label for="collegeCode" class="labelField">Select the college code</label>
+                                        <input class="inputField" name="CollegeCode" id="signUpFieldCollegeCode" ></input>
 
                                         <label for="offEmail" class="labelField">Enter your official email</label>
                                         <input type="email" class="inputField" name="offEmail" id="signUpFieldOffEmail" placeholder="Officail Email" ></input>
@@ -41,12 +45,9 @@
                                 <div id="step3">
                                         <label for="branch" class="labelField step3Field branch">Select your branch</label>
                                         <select name="branch" class="inputField step3Field branch">
-                                                <option value="1">CSE</option>
-                                                <option value="2">IT</option>
-                                                <option value="3">Civil</option>
-                                                <option value="4">Mechanical</option>
-                                                <option value="5">EC</option>
-                                                <option value="6">Electrical</option>
+                                                <% for(var i=0;i<data.branch.length;i++){ %>
+                                                                <option value="<%=data.branch[i].name%>"><%=data.branch[i].name%></option>
+                                                        <%}%>
                                         </select>
                                         <label for="dateJoinHod" class="labelField step3Field dateJoinHod">Date of joining as HOD</label>
                                         <input type="date" class="inputField step3Field dateJoinHod" name="dateJoinHod" id="signUpFielddateJoinHod" placeholder="YYYY-MM-DD" ></input>
