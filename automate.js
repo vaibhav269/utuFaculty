@@ -136,40 +136,46 @@ function automate(college, facultyModel, collegeModel, branchModel, callback) {
         if (err) {
             return console.log(err);
         }
+        branchModel.find({},function(err,branches){
+            if(err){
+                return console.log(err);
+            }
 
-        googleDistance(srcCollege.lat.toString() + "," + srcCollege.lng.toString(), srcCollege.name, collegeModel).then(resolved => {
-            collegeModel.findOne({ lat: resolved.split(",")[0] }, function (err, destCollege) {
-                if (err) {
-                    return Promise.reject(err);
-                }
-                console.log(destCollege)
-                /*  branches = srcCollege.branches;
-  
-                  // for loop to iterate over source college branches
-                  for (i in branches) {
-                      pracSubjects = branchModel.find({ name: i }).practicalSubjects;
-                      assignFaculties(pracSubjects, destCollege, i, srcCollege, facultyModel);
-                  }  */
-
-                //...........................................................................................
-                branches = ["CS", "IT"];
-                for (let i in branches) {
-                    branchModel.findOne({ name: branches[i] }, function (err, brnch) {
-                        pracSubjects = brnch.practicalSubjects;
-                        assignExternalFaculties(pracSubjects, destCollege, branches[i], srcCollege.name, facultyModel);
-                        //console.log(pracSubjects);
-                        assignInternalFaculties(pracSubjects,branches[i], srcCollege.name, facultyModel);
-                    });
-
-                }
-
-                //...............................................................................................
-
-                // callback();
+            googleDistance(srcCollege.lat.toString() + "," + srcCollege.lng.toString(), srcCollege.name, collegeModel).then(resolved => {
+                collegeModel.findOne({ lat: resolved.split(",")[0] }, function (err, destCollege) {
+                    if (err) {
+                        return Promise.reject(err);
+                    }
+                    console.log(destCollege)
+                    /*  branches = srcCollege.branches;
+      
+                      // for loop to iterate over source college branches
+                      for (i in branches) {
+                          pracSubjects = branchModel.find({ name: i }).practicalSubjects;
+                          assignFaculties(pracSubjects, destCollege, i, srcCollege, facultyModel);
+                      }  */
+    
+                    //...........................................................................................
+                    //branches = ["CS", "IT"];
+                    for (let i in branches) {
+                        branchModel.findOne({ name: branches[i].name }, function (err, brnch) {
+                            pracSubjects = brnch.practicalSubjects;
+                            assignExternalFaculties(pracSubjects, destCollege, branches[i], srcCollege.name, facultyModel);
+                            //console.log(pracSubjects);
+                            assignInternalFaculties(pracSubjects,branches[i], srcCollege.name, facultyModel);
+                        });
+    
+                    }
+    
+                    //...............................................................................................
+    
+                    // callback();
+                });
+            }).catch(reject => {
+                console.log(`${reject.message}`);
             });
-        }).catch(reject => {
-            console.log(`${reject.message}`);
         });
+        
     });
 }
 
