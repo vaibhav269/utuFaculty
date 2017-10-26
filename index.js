@@ -5,7 +5,21 @@ var bodyParser=require('body-parser');
 var mongoose = require('mongoose');
 var session = require('express-session');
 var automateExternals = require('./automate.js');
+var nodemailer = require("nodemailer");
 
+var transporter = nodemailer.createTransport({
+  service: 'gmail',
+  host: "smtp.gmail.com",
+  auth: {
+    user: 'yourEmail',
+    pass: 'yourPassword'
+  }
+});
+
+var mailOptions = {
+                from: 'yourEmail',
+                text: 'kindly report to the campus within 2 days for further formalities'
+        };
 
 app.use(express.static('public'));
 app.use(bodyParser.urlencoded({extended:false}));
@@ -72,7 +86,8 @@ var deanSchema=new mongoose.Schema({
 var adminSchema=new mongoose.Schema({
                 offEmail:{type:String,trim:true},
                 pass:{type:String},
-                designation:{type: String,required: true,trim: true}
+                designation:{type: String,required: true,trim: true},
+                confirm:{type:Boolean}
 });
 
 var branchSchema=new mongoose.Schema({
@@ -82,11 +97,12 @@ var branchSchema=new mongoose.Schema({
 
 var collegeSchema=new mongoose.Schema({
         name:{type:String,required:true,trim:true},
+        code:{type: String,required: true,trim: true},
         location:{type:String,required:true,trim:true},
         lat:{type: Number,required: true,trim: true},
         lng:{type: Number,required: true,trim: true},
         externalFaculty: {type: mongoose.Schema.Types.ObjectId, ref: 'faculty' },
-        internalFaculty: { type: mongoose.Schema.Types.ObjectId, ref: 'faculty' }
+        internalFaculty: { type: mongoose.Schema.Types.ObjectId, ref: 'faculty' },
 });
 
 var internalFacultyFeedbackSchema=new mongoose.Schema({
@@ -145,8 +161,16 @@ app.get('/',function(req,res){
                 else if(sess.designation=="4")
                         res.redirect('/loginAdmin');
         }
-        else
-                res.render('home');
+        else{
+                var data={};
+                branch.find({},{name:1,_id:0},function(err,branchData){
+                        data.branch=branchData;
+                        college.find({},{name:1,code:1,_id:0},function(err,collegeData){
+                                data.college=collegeData;
+                                res.render('home',{data:data});
+                        });
+                });
+        }
 });
 
 app.post('/admin',function(req,res){
@@ -236,7 +260,7 @@ app.post('/logInForm',function(req,res){
         if(req.body.designation=="4")
                         model=admin;
 
-          model.findOne({offEmail:req.body.offEmail},function(err,userData){
+          model.findOne({$and:[{offEmail:req.body.offEmail},{confirm:true}]},function(err,userData){
                                 if(userData!=null)
                                 {
                                               bcrypt.compare(req.body.pass,userData.pass, function (err, result) {
@@ -262,9 +286,9 @@ app.get('/logInFaculty',function(req,res){
         sess=req.session;
         if(sess.offEmail){
                 faculty.findOne({offEmail:sess.offEmail},function(err,data){
-                        /*demo values here for code testing 
-                        
-                        data.externalExam=[{collegeName:"COER",collegeLocation:"Fuck Fuck",subject:"computer"},{collegeName:"COER",collegeLocation:"Fuck Fuck",subject:"computer"}];            
+                        /*demo values here for code testing
+
+                        data.externalExam=[{collegeName:"COER",collegeLocation:"Fuck Fuck",subject:"computer"},{collegeName:"COER",collegeLocation:"Fuck Fuck",subject:"computer"}];
                         data.internalExam=["hello","brother"];
                         */
                         res.render('logInFaculty',{data:data});
@@ -296,9 +320,22 @@ app.post("/facultyConfirm0",function(req,res){
 
 app.post("/facultyConfirm",function(req,res){
         faculty.update({_id:req.body.confirmId},{confirm:true},function(err,raw){
-                if (err) {
-                        console.log(err);
-                }
+                        if (err) {
+                                console.log(err);
+                        }
+                        else{
+                                faculty.findOne({_id:req.body.confirmId},function(err,data){
+                                                mailOptions.to=data.offEmail;
+                                                mailOptions.subject="Job confirmation from college "+data.CollegeName;
+                                                transporter.sendMail(mailOptions, function(error, info){
+                                                        if (error) {
+                                                        console.log(error);
+                                                        } else {
+                                                        console.log('Email sent: ' + info.response);
+                                                        }
+                                                });
+                                });
+                        }
                 });
         res.send(req.body.confirmId);
 });
@@ -368,7 +405,7 @@ app.get('/logInHod',function(req,res){
         sess=req.session;
         if(sess.offEmail){
                 faculty.find({confirm0:false},null,{sort:{createdAt:-1}},function(err,data){
-                        data.forEach(function(val){                     //setting brach from code to string
+                        data.forEach(function(val){                     //setting branch from code to string
                                         if(val.branch=="1")
                                                 val.branch="CSE";
                                         else if(val.branch=="2")
@@ -393,6 +430,19 @@ app.post("/hodConfirm",function(req,res){
         hod.update({_id:req.body.confirmId},{confirm:true},function(err,raw){
                 if (err) {
                         console.log(err);
+                }
+                else{
+                        hod.findOne({_id:req.body.confirmId},function(err,data){
+                                        mailOptions.to=data.offEmail;
+                                        mailOptions.subject="Job confirmation from college "+data.CollegeName;
+                                        transporter.sendMail(mailOptions, function(error, info){
+                                                if (error) {
+                                                console.log(error);
+                                                } else {
+                                                console.log('Email sent: ' + info.response);
+                                                }
+                                        });
+                        });
                 }
                 });
         res.send(req.body.confirmId);
@@ -442,6 +492,19 @@ app.post("/deanConfirm",function(req,res){
         dean.update({_id:req.body.confirmId},{confirm:true},function(err,raw){
                 if (err) {
                         console.log(err);
+                }
+                else{
+                        dean.findOne({_id:req.body.confirmId},function(err,data){
+                                        mailOptions.to=data.offEmail;
+                                        mailOptions.subject="Job confirmation from college "+data.CollegeName;
+                                        transporter.sendMail(mailOptions, function(error, info){
+                                                if (error) {
+                                                console.log(error);
+                                                } else {
+                                                console.log('Email sent: ' + info.response);
+                                                }
+                                        });
+                        });
                 }
                 });
         res.send(req.body.confirmId);

@@ -87,6 +87,7 @@ $(document).ready(function(){
                                         alert("Successfully entered");
                                         $("#collegeLocation").val("");
                                         $("#collegeName").val("");
+                                        $("#collegeCode").val("");
                                         $("#lat").val("");
                                         $("#lng").val("");
                                         }

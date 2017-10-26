@@ -44,4 +44,10 @@ $(document).ready(function(){
                 });
                 });
 });
+
+        $("#signUpFieldCollegeName").on('change',function(){                            //setting the college code according to college selected
+                var x = document.getElementById("signUpFieldCollegeName");      //getting the container or select element
+                var val=x.options[x.selectedIndex].getAttribute("data-college-code");   //getting the selected or option element
+                        $("#signUpFieldCollegeCode").val(val);                                  //setting the college code accordingly
+                });
 });
