@@ -53,15 +53,16 @@ function googleDistance(origin, originName, collegeModel) {
     });
 }
 
-
 function randomNum(min, max) {
     return Math.floor(Math.random() * (max - min + 1) + min);
 }
 
 //function assigns externals for practical subjects
-function assignFaculties(pracSubjects, destCollege, branch, srcCollege, facultyModel) {
-    // find faculties of branch of dest college
-    facultyModel.find({ CollegeName: destCollege.name, branch: branch }, function (err, faculties) {
+function assignExternalFaculties(pracSubjects, destCollege, branch, srcCollege, facultyModel) {
+
+    for (let i = 0; i < pracSubjects.length; i++) {
+            // find faculties of branch of dest college
+    facultyModel.find({ CollegeName: destCollege.name, branch: branch, practicalSubjects:{$in:[pracSubjects[i]]} }, function (err, faculties) {
         if (err) {
             return console.log(err.message);
         }
@@ -71,22 +72,64 @@ function assignFaculties(pracSubjects, destCollege, branch, srcCollege, facultyM
         //console.log(faculties.length)
         // iterate over practical subjects of branches
 
-        for (i = 0; i < pracSubjects.length; i++) {
             // get id of random faculty
-            let id = faculties[randomNum(0, faculties.length - 1)]._id;
+            rNum = randomNum(0, faculties.length - 1);
+            while(faculties[rNum].externalExam.length > 2){
+                rNum = randomNum(0, faculties.length - 1);
+            }
+            let id = faculties[rNum]._id;
 
             // console.log(sub, pracSubjects, pracSubjects.length);
             // assign the subject to that random faculty and update database
-            facultyModel.update({ _id: id }, { $push: { externalExam: { college: srcCollege, subject: pracSubjects[i] } } }, function (err, result) {
+            facultyModel.update({ _id: id }, { $push: { externalExam: { collegeName: srcCollege, subject: pracSubjects[i] } } }, function (err, result) {
                 if (err) {
                     return console.log(err);
                 }
                 console.log("added external subjects..");
             });
-        }
      });
+    }
 
 }
+
+
+//function assigns externals for practical subjects
+function assignInternalFaculties(pracSubjects,branch, srcCollege, facultyModel) {
+    
+        for (let i = 0; i < pracSubjects.length; i++) {
+                // find faculties of branch of dest college
+        facultyModel.find({ CollegeName: srcCollege, branch: branch, practicalSubjects:{$in:[pracSubjects[i]]} }, function (err, faculties) {
+            if (err) {
+                return console.log(err.message);
+            }
+    
+            //console.log(faculties)
+    
+            //console.log(faculties.length)
+            // iterate over practical subjects of branches
+    
+                // get id of random faculty
+                rNum = randomNum(0, faculties.length - 1);
+                while(faculties[rNum].externalExam.length > 2){
+                    rNum = randomNum(0, faculties.length - 1);
+                }
+                let id = faculties[rNum]._id;
+    
+                // console.log(sub, pracSubjects, pracSubjects.length);
+                // assign the subject to that random faculty and update database
+                facultyModel.update({ _id: id }, { $push: { internalExam: pracSubjects[i] } }, function (err, result) {
+                    if (err) {
+                        return console.log(err);
+                    }
+                    console.log("added external subjects..");
+                });
+         });
+        }
+    
+    }
+    
+
+
 
 function automate(college, facultyModel, collegeModel, branchModel, callback) {
     collegeModel.findOne({ name: college }, function (err, srcCollege) {
@@ -110,11 +153,12 @@ function automate(college, facultyModel, collegeModel, branchModel, callback) {
 
                 //...........................................................................................
                 branches = ["CS", "IT"];
-                for (i in branches) {
+                for (let i in branches) {
                     branchModel.findOne({ name: branches[i] }, function (err, brnch) {
                         pracSubjects = brnch.practicalSubjects;
-                        assignFaculties(pracSubjects, destCollege, branches[i], srcCollege, facultyModel);
+                        assignExternalFaculties(pracSubjects, destCollege, branches[i], srcCollege.name, facultyModel);
                         //console.log(pracSubjects);
+                        assignInternalFaculties(pracSubjects,branches[i], srcCollege.name, facultyModel);
                     });
 
                 }

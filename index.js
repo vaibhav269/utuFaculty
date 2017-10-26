@@ -142,6 +142,8 @@ app.get('/',function(req,res){
                         res.redirect('/logInHod');
                 else if(sess.designation=="3")
                         res.redirect('/logInDean');
+                else if(sess.designation=="4")
+                        res.redirect('/loginAdmin');
         }
         else
                 res.render('home');
@@ -513,11 +515,21 @@ app.post('/internalFeedback',function(req,res){
 });
 
 app.post('/automate',function(req,res){
-        srcCollege = "College of engineering roorkee";
-        automateExternals.automate(srcCollege,faculty,college,branch,function(){
-                console.log("automate practicals...");
-                res.send("Practicals Automated");
+        college.find({},function(err,colleges){
+                if(err){
+                        return console.log(err);
+                }
+
+                for(let m=0;m<colleges.length;m++){
+                        srcCollege = colleges[m].name;
+                        automateExternals.automate(srcCollege,faculty,college,branch,function(){
+                                console.log("automate practicals...");
+                                res.send("Practicals Automated");
+                        });
+                      //  console.log(srcCollege);
+                }
         });
+        
 });
 
 app.listen(5000);
