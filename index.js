@@ -159,7 +159,7 @@ app.get('/',function(req,res){
                 else if(sess.designation=="3")
                         res.redirect('/logInDean');
                 else if(sess.designation=="4")
-                        res.redirect('/loginAdmin');
+                        res.redirect('/logInAdmin');
         }
         else{
                 var data={};
@@ -270,6 +270,7 @@ app.post('/logInForm',function(req,res){
                                                       {
                                                               sess.offEmail=req.body.offEmail;
                                                               sess.designation=req.body.designation;
+                                                              sess.CollegeName=userData.CollegeName;
                                                               res.send(req.body.designation);
                                                       }
                                                         else
@@ -404,7 +405,7 @@ app.post("/facultyRemove",function(req,res){
 app.get('/logInHod',function(req,res){
         sess=req.session;
         if(sess.offEmail){
-                faculty.find({confirm0:false},null,{sort:{createdAt:-1}},function(err,data){
+                faculty.find({$and:[{confirm0:false},{CollegeName:sess.CollegeName}]},null,{sort:{createdAt:-1}},function(err,data){
                         data.forEach(function(val){                     //setting branch from code to string
                                         if(val.branch=="1")
                                                 val.branch="CSE";
@@ -461,7 +462,7 @@ app.get('/logInDean',function(req,res){
         var data={};                               //taking a variable to store data of faculty and hod both
         sess=req.session;
         if(sess.offEmail){
-                faculty.find({$and:[{confirm0:true},{confirm:false}]},null,{sort:{createdAt:-1}},function(err,facultyData){             //getting faculty data
+                faculty.find({$and:[{confirm0:true},{confirm:false},{CollegeName:sess.CollegeName}]},null,{sort:{createdAt:-1}},function(err,facultyData){             //getting faculty data
                         facultyData.forEach(function(val){                     //setting brach from code to string
                                         if(val.branch=="1")
                                                 val.branch="CSE";
@@ -478,7 +479,7 @@ app.get('/logInDean',function(req,res){
                                         });
                         data.faculty=facultyData;
 
-                                        hod.find({confirm:false},null,{sort:{createdAt:-1}},function(err,hodData){             //getting hod data
+                                        hod.find({$and:[{confirm:false},{CollegeName:sess.CollegeName}]},null,{sort:{createdAt:-1}},function(err,hodData){             //getting hod data
                                                 data.hod=hodData;
                                                 res.render('logInDean',{data:data});                      //sending hod and faculty data to logInDean
                                         });
@@ -578,21 +579,11 @@ app.post('/internalFeedback',function(req,res){
 });
 
 app.post('/automate',function(req,res){
-        college.find({},function(err,colleges){
-                if(err){
-                        return console.log(err);
-                }
-
-                for(let m=0;m<colleges.length;m++){
-                        srcCollege = colleges[m].name;
-                        automateExternals.automate(srcCollege,faculty,college,branch,function(){
-                                console.log("automate practicals...");
-                                res.send("Practicals Automated");
-                        });
-                      //  console.log(srcCollege);
-                }
+        srcCollege = "College of engineering roorkee";
+        automateExternals.automate(srcCollege,faculty,college,branch,function(){
+                console.log("automate practicals...");
+                res.send("Practicals Automated");
         });
-        
 });
 
 app.listen(5000);
