@@ -30,7 +30,13 @@ app.set('view engine','ejs');
 var sess;
 //database connection start
 
-mongoose.connect('mongodb://localhost/utu');
+var dbUrl='mongodb://utu:vaibhav@ds121289.mlab.com:21289/utu';
+//var dbUrl='mongodb://localhost/utu';
+mongoose.connect(dbUrl, {
+  useMongoClient: true
+});
+
+mongoose.connect('');
 
 var facultySchema=new mongoose.Schema({
         name:{type: String,required: true,trim: true},
@@ -523,7 +529,7 @@ app.post('/branchEnter',function(req,res){
         var userData={};
         userData.name=req.body.name;
         userData.practicalSubjects=req.body.practicalSubjects.split(',');
-        branch.create(userData, function (err, user) {        //storing all data 
+        branch.create(userData, function (err, user) {        //storing all data
                 if (err){
                         console.log(err);
                 }
