@@ -7,6 +7,10 @@ var session = require('express-session');
 var automateExternals = require('./automate.js');
 var nodemailer = require("nodemailer");
 
+
+var port=process.env.PORT || 5000;
+//var port=5000;
+
 var transporter = nodemailer.createTransport({
   service: 'gmail',
   host: "smtp.gmail.com",
@@ -601,4 +605,4 @@ app.post('/automate',function(req,res){
         });
 });
 
-app.listen(5000);
+app.listen(port);
